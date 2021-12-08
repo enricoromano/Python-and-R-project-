@@ -51,7 +51,8 @@ in a more usable R object. ```glimpse()``` can help
 |`generation_time`|`Floating Point`|Generation time of the weather forecast in milli seconds|
 |`elevation`|`Floating Point`|The elevation in meters of the selected weather grid-cell|
 
-
+### Other Documentation
+You can find the documentation for task 2 in the two .zip files
 ## Authors
 
 - Enrico Romano(enrico.romano@studenti.luiss.it)
