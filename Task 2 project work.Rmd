@@ -1,0 +1,86 @@
+---
+title: "Task 2 project work"
+author: "Enrico Romano"
+date: "06/12/2021"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(dplyr)
+
+```
+
+## dataset
+We choose the covid dataset from the github repository "https://github.com/mirocon/Project_Python_R.git".
+ Then with the head() We took a quick look at the dataset.
+```{r}
+covid<-read.csv("covid.csv")
+head(covid)
+```
+## Data manipulation and visualization
+We decided to focus on the analysis of covid cases and deaths in Italy in March 2020, historically known to be the darkest month in the pandemic crisis in our country.
+The second step of our analysis is based on data manipulation and visualization via graphs. 
+A first graph, was about the time series of the covid cases in the march 2020 in Italy.
+```{r}
+
+covid %>%
+  filter(country=="Italy", year=="2020", month=="3") %>%
+  ggplot(aes(x=day,y=cases))+
+  geom_line(stat="identity")+
+  geom_point()+
+  ggtitle("covid cases in March 2020")
+```
+From the graph above, we can see an increasing trend during the month of March, with a peak of more than 6000 cases on the 22nd. 
+Another important aspect related to this month, is the number of death per day.
+```{r}
+covid %>%
+  filter(country=="Italy", year=="2020", month=="3") %>%
+  ggplot(aes(x=day,y=deaths))+
+  geom_line(stat="identity")+
+  geom_point()+
+  ggtitle("covid deaths in March 2020")
+```
+As for the first plot, The trend of deaths is also increasing during the month.
+More generally, through the data at our disposal, it is possible to view among the 5 most important EU countries the one with the highest number of cases in March 2020. In order to do this, we consider the cases_cum on the 31/03/2020
+```{r}
+nations<-c("Italy","Germany","Spain","France","United_Kingdom")
+covid %>%
+  filter(country %in% nations, year=="2020", month=="3", day=="31") %>%
+  ggplot(aes(country,cases_cum))+
+  geom_bar(stat="identity")+
+  ggtitle("covid cases in EU-5 countries")
+```
+It can be seen that Italy, like Spain, is the country with the most confirmed covid cases (with reference to march 2020). The other countries have almost half as many cases as Italy and Spain.
+The same analysis was made for the number of deaths
+```{r}
+covid %>%
+  filter(country %in% nations, year=="2020", month=="3", day=="31") %>%
+  ggplot(aes(country,deaths_cum))+
+  geom_bar(stat="identity")+
+  ggtitle("covid deaths in EU-5 countries")
+```
+Again, Italy is the most affected country. While for Spain, the number of deaths is approximately 6500. This figure is lower than for Italy but still much higher than for the other large EU countries.
+Finally, we repeated the same analysis as in March, in December, to see if there was any change in the total number of cases and deaths. In particular, we looked at the latest available date, 13 December 2020.
+```{r}
+covid %>%
+  filter(country %in% nations, year=="2020", month=="12", day=="13") %>%
+  ggplot(aes(country,cases_cum))+
+  geom_bar(stat="identity")+
+  ggtitle("covid cases in EU-5 countries at the end of 2020")
+```
+```{r}
+covid %>%
+  filter(country %in% nations, year=="2020", month=="12", day=="13") %>%
+  ggplot(aes(country,deaths_cum))+
+  geom_bar(stat="identity")+
+  ggtitle("covid deaths in EU-5 countries at the end of 2020")
+```
+This latest analysis shows that, at the end of the year, France has become the most affected country (with a total of more than 2 million cases); Italy, on the other hand, has followed the trend of the other countries, while Germany remains the least affected country. As far as deaths are concerned, Italy remains the country with the highest number (this could be due to a bad hospital system, but we have no data to verify a possible correlation).However, England also has the same number of deaths (as well as the same number of cases), while Germany once again has the lowest number, making it the country of the top five in the Union least affected by covid. Finally, Spain has around 5000 deaths.
+
